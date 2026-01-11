@@ -1,0 +1,16 @@
+package stepsforHooks;
+
+
+import io.cucumber.junit.Cucumber;
+import io.cucumber.junit.CucumberOptions;
+ import org.junit.runner.RunWith;
+
+@RunWith(Cucumber.class)
+@CucumberOptions(
+        features = "src/test/resources/Feature/HooksDemo/hooks.feature",
+        glue = {"stepsforHooks"},
+        plugin = {"pretty" , "html:target/hooksCucu.html"},
+        monochrome = true
+)
+public class TestRunner {
+}

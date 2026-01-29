@@ -22,7 +22,6 @@ public class Hook {
                 "--disable-dev-shm-usage"
         );
 
-        // ✅ ASSIGN TO STATIC VARIABLE
         driver = new RemoteWebDriver(
                 new URL("http://localhost:4444/wd/hub"),
                 options

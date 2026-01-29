@@ -1,20 +1,9 @@
-FROM selenium/standalone-chrome:latest
+FROM maven:3.9.6-eclipse-temurin-21
 
-# Install Maven
-USER root
-RUN apt-get update && \
-    apt-get install -y maven && \
-    rm -rf /var/lib/apt/lists/*
-
-# Set working directory
 WORKDIR /app
-
-# Copy project
 COPY pom.xml .
 COPY src ./src
 
-# Pre-download dependencies
 RUN mvn dependency:go-offline
 
-# Default command
 CMD ["mvn", "test"]

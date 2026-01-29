@@ -1,9 +1,6 @@
 package tests;
 
-import io.cucumber.java.en.And;
-import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
-import io.cucumber.java.en.When;
+import io.cucumber.java.en.*;
 import org.openqa.selenium.WebDriver;
 import pages.LoginPage;
 import stepsforHooks.Hook;
@@ -12,13 +9,9 @@ public class login_pom {
 
     WebDriver driver;
 
-    public login_pom() {
-        // ✅ Reuse driver from Hook
-        this.driver = Hook.driver;
-    }
-
     @Given("user is on login page")
     public void userIsOnLoginPage() {
+        driver = Hook.driver; // ✅ Hook already executed
         driver.get("https://practicetestautomation.com/practice-test-login/");
     }
 

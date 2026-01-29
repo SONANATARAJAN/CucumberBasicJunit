@@ -60,6 +60,14 @@ pipeline {
                 '''
             }
         }
+        stage('Run Maven Tests') {
+    steps {
+        sh '''
+            docker run --rm -v $PWD:/app -w /app $IMAGE_NAME mvn clean test
+        '''
+    }
+}
+
     }
 
     post {

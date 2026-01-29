@@ -12,7 +12,14 @@ public class Hook {
 
     @Before
     public void browserSetup(){
-        driver = new ChromeDriver();
+        ChromeOptions options = new ChromeOptions();
+options.addArguments("--headless");
+options.addArguments("--no-sandbox");
+options.addArguments("--disable-dev-shm-usage");
+options.addArguments("--window-size=1920,1080");
+
+ 
+        driver = new ChromeDriver(options);
         driver.manage().window().maximize();
        // driver.manage().timeouts().pageLoadTimeout(20, TimeUnit.SECONDS);
     }

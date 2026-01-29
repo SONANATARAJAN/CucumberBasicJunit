@@ -1,11 +1,6 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE_NAME = "sonajerry/java-maven-test"
-        CONTAINER_NAME = "java-maven-test-container"
-    }
-
     stages {
 
         stage('Checkout') {
@@ -14,52 +9,59 @@ pipeline {
             }
         }
 
-        stage('Docker Login') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'docker', 
-                    usernameVariable: 'DOCKER_USER',
-                    passwordVariable: 'DOCKER_PASS'
-                )]) {
-                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
-                }
-            }
-        }
-
-        stage('Docker Build') {
-            steps {
-                sh 'docker build -t $IMAGE_NAME .'
-            }
-        }
-
-        stage('Run Maven Tests') {
-            steps {
-                sh 'docker run --rm -v $PWD:/app -w /app $IMAGE_NAME mvn clean test'
-            }
-        }
-
-        stage('Docker Push') {
-            steps {
-                sh 'docker push $IMAGE_NAME'
-            }
-        }
-
-        stage('Deploy') {
+        stage('Create Docker Network') {
             steps {
                 sh '''
-                    docker rm -f $CONTAINER_NAME || true
-                    docker run -d --name $CONTAINER_NAME $IMAGE_NAME
+                docker network inspect selenium-net >/dev/null 2>&1 || \
+                docker network create selenium-net
+                '''
+            }
+        }
+
+        stage('Start Selenium Container') {
+            steps {
+                sh '''
+                docker rm -f selenium || true
+
+                docker run -d \
+                  --name selenium \
+                  --network selenium-net \
+                  --shm-size="2g" \
+                  selenium/standalone-chrome
+                '''
+            }
+        }
+
+        stage('Build Test Image') {
+            steps {
+                sh '''
+                docker build -t cucumber-tests .
+                '''
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh '''
+                docker run --rm \
+                  --network selenium-net \
+                  cucumber-tests
                 '''
             }
         }
     }
 
     post {
+        always {
+            sh '''
+            docker rm -f selenium || true
+            '''
+        }
         success {
-            echo "✅ Maven tests ran, Docker image built & deployed successfully"
+            echo '✅ Tests passed successfully'
         }
         failure {
-            echo "❌ Pipeline failed"
+            echo '❌ Tests failed'
         }
     }
 }

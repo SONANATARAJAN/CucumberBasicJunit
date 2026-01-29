@@ -19,17 +19,16 @@ public class Hook {
         options.addArguments(
                 "--headless=new",
                 "--no-sandbox",
-                "--disable-dev-shm-usage",
-                "--disable-gpu",
-                "--window-size=1920,1080"
+                "--disable-dev-shm-usage"
         );
 
-        // ✅ IMPORTANT: assign to class variable
+        // ✅ ASSIGN TO STATIC VARIABLE
         driver = new RemoteWebDriver(
                 new URL("http://localhost:4444/wd/hub"),
                 options
         );
 
+        driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
     }
 

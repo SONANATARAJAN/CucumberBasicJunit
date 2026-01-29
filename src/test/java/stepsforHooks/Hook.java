@@ -3,30 +3,32 @@ package stepsforHooks;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.net.URL;
 
 public class Hook {
 
-    public static WebDriver driver; // Make static if used in other classes
+    public static WebDriver driver;
 
     @Before
-    public void browserSetup() {
-        // ChromeOptions for Linux headless
-ChromeOptions options = new ChromeOptions();
-options.addArguments(
-    "--headless=new",
-    "--no-sandbox",
-    "--disable-dev-shm-usage"
-);
+    public void browserSetup() throws Exception {
 
-WebDriver driver = new RemoteWebDriver(
-    new URL("http://localhost:4444/wd/hub"),
-    options
-);
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments(
+                "--headless=new",
+                "--no-sandbox",
+                "--disable-dev-shm-usage"
+        );
 
+        // 🔥 IMPORTANT:
+        // Use container name, NOT localhost
+        driver = new RemoteWebDriver(
+                new URL("http://selenium:4444/wd/hub"),
+                options
+        );
 
-        // Optional timeouts
         driver.manage().window().maximize();
         driver.manage().deleteAllCookies();
     }
@@ -34,7 +36,7 @@ WebDriver driver = new RemoteWebDriver(
     @After
     public void browserShutDown() {
         if (driver != null) {
-            driver.quit(); // Close all windows
+            driver.quit();
         }
     }
 }

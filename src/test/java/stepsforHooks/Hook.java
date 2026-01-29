@@ -14,6 +14,7 @@ public class Hook {
     public void browserSetup() {
         // ChromeOptions for Linux headless
         ChromeOptions options = new ChromeOptions();
+        options.setBinary("/usr/bin/chromium-browser");
         options.addArguments("--headless=new");           // Chrome 109+ uses new headless mode
         options.addArguments("--no-sandbox");             // Required in Linux
         options.addArguments("--disable-dev-shm-usage");  // Avoid /dev/shm crash

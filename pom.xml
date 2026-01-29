@@ -6,6 +6,11 @@
   <version>1.0-SNAPSHOT</version>
   <name>Archetype - cucumber</name>
   <url>http://maven.apache.org</url>
+  <properties>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven.compiler.target>11</maven.compiler.target>
+</properties>
+
   <dependencies>
     <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
     <dependency>

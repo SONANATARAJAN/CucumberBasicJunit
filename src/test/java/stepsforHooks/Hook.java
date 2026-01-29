@@ -23,7 +23,7 @@ public class Hook {
         );
 
         driver = new RemoteWebDriver(
-                new URL("http://localhost:4444/wd/hub"),
+                new URL("http://selenium:4444/wd/hub"), // 🔥 FIX
                 options
         );
 

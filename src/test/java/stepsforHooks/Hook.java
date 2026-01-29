@@ -14,18 +14,17 @@ public class Hook {
     public void browserSetup() {
         // ChromeOptions for Linux headless
 ChromeOptions options = new ChromeOptions();
-options.addArguments("--headless=new");
-options.addArguments("--no-sandbox");
-options.addArguments("--disable-dev-shm-usage"); // uses /tmp instead of /dev/shm
-options.addArguments("--disable-gpu");
-options.addArguments("--disable-software-rasterizer");
-options.addArguments("--disable-extensions");
-options.addArguments("--remote-allow-origins=*");
-options.addArguments("--window-size=1920,1080");
+options.addArguments(
+    "--headless=new",
+    "--no-sandbox",
+    "--disable-dev-shm-usage"
+);
 
+WebDriver driver = new RemoteWebDriver(
+    new URL("http://localhost:4444/wd/hub"),
+    options
+);
 
-        // Create driver
-        driver = new ChromeDriver(options);
 
         // Optional timeouts
         driver.manage().window().maximize();

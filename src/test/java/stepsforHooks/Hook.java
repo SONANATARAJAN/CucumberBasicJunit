@@ -13,14 +13,16 @@ public class Hook {
     @Before
     public void browserSetup() {
         // ChromeOptions for Linux headless
-        ChromeOptions options = new ChromeOptions();
-        options.setBinary("/usr/bin/chromium-browser");
-        options.addArguments("--headless=new");           // Chrome 109+ uses new headless mode
-        options.addArguments("--no-sandbox");             // Required in Linux
-        options.addArguments("--disable-dev-shm-usage");  // Avoid /dev/shm crash
-        options.addArguments("--disable-gpu");           // Optional
-        options.addArguments("--window-size=1920,1080"); // Required for full rendering
-        options.addArguments("--remote-allow-origins=*"); // Solve ChromeDriver CORS issue 4.27+
+ChromeOptions options = new ChromeOptions();
+options.addArguments("--headless=new");
+options.addArguments("--no-sandbox");
+options.addArguments("--disable-dev-shm-usage"); // uses /tmp instead of /dev/shm
+options.addArguments("--disable-gpu");
+options.addArguments("--disable-software-rasterizer");
+options.addArguments("--disable-extensions");
+options.addArguments("--remote-allow-origins=*");
+options.addArguments("--window-size=1920,1080");
+
 
         // Create driver
         driver = new ChromeDriver(options);

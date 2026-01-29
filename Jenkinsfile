@@ -17,32 +17,24 @@ pipeline {
         stage('Docker Login') {
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'docker',   // Jenkins credential ID
+                    credentialsId: 'docker', 
                     usernameVariable: 'DOCKER_USER',
                     passwordVariable: 'DOCKER_PASS'
                 )]) {
-                    sh '''
-                        echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
-                    '''
+                    sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
                 }
             }
         }
 
         stage('Docker Build') {
             steps {
-                // Build Docker image that contains your Maven project
-                sh '''
-                    docker build -t $IMAGE_NAME .
-                '''
+                sh 'docker build -t $IMAGE_NAME .'
             }
         }
 
         stage('Run Maven Tests') {
             steps {
-                // Run Maven tests inside Docker container
-                sh '''
-                    docker run --rm -v $PWD:/app -w /app $IMAGE_NAME mvn test
-                '''
+                sh 'docker run --rm -v $PWD:/app -w /app $IMAGE_NAME mvn clean test'
             }
         }
 
@@ -60,14 +52,6 @@ pipeline {
                 '''
             }
         }
-        stage('Run Maven Tests') {
-    steps {
-        sh '''
-            docker run --rm -v $PWD:/app -w /app $IMAGE_NAME mvn clean test
-        '''
-    }
-}
-
     }
 
     post {

@@ -1,4 +1,4 @@
-Absolutely! I can create a **complete Markdown (`.md`) file** that consolidates everything we discussed — **issues, root causes, fixes, and best practices for Jenkins + Maven + Selenium on a low-resource Linux server** — in a clean, structured way. This will include:
+  **issues, root causes, fixes, and best practices for Jenkins + Maven + Selenium on a low-resource Linux server** — 
 
 * Maven compilation issues
 * Low RAM / swap issues
